@@ -16,49 +16,53 @@ const merge = require('webpack-merge');
 const ASSET_PATH = '/asset/';
 //通用配置
 const common = {
-    entry: {
-        app: './src/index.js'
-    },
+    entry: ["babel-polyfill", './src/index.jsx'],
     resolve: {
         extensions: ['.js', '.jsx']
     },
     module: {
-        rules: [
-            {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader']
-            }, {
-                test: /\.(jsx|js)?$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['env', 'react', "stage-2"]
-                    }
+        rules: [{
+            test: /\.less$/,
+            use: ['style-loader', 'css-loader', {
+                loader: "less-loader",
+                options: {
+                    javascriptEnabled: true
                 }
-            }, {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name(file) {
-                                return '[path][hash].[ext]'
-                            }
+            }]
+        }, {
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader']
+        }, {
+            test: /\.(jsx|js)?$/,
+            exclude: /node_modules/,
+            use: {
+                loader: 'babel-loader',
+                options: {
+                    presets: ['es2015', 'react', "stage-0"],
+                    plugins: [
+                        'transform-decorators-legacy'
+                    ]
+                }
+            }
+        }, {
+            test: /\.(png|svg|jpg|gif)$/,
+            use: [{
+                    loader: 'file-loader',
+                    options: {
+                        name(file) {
+                            return '[path][hash].[ext]'
                         }
                     }
+                }
 
-                ]
-            }
-        ]
+            ]
+        }]
     },
     plugins: [
-        new CopyWebpackPlugin([
-            {
-                from: "./public",
-                to: path.resolve(__dirname, 'dist')
-            }
-        ]),
+        new CopyWebpackPlugin([{
+            from: "./public",
+            to: path.resolve(__dirname, 'dist')
+        }]),
         new HtmlWebpackPlugin({
             template: "./public/index.html",
         })
@@ -75,7 +79,7 @@ const dev = merge(common, {
         contentBase: './dist',
         //当使用 HTML5 History API 时，任意的 404 响应都可能需要被替代为 index.html
         historyApiFallback: true,
-        port:8080
+        port: 8080
     }
 });
 //生产环境
