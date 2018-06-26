@@ -14,12 +14,61 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 //公用文件存放位置
 const ASSET_PATH = '/asset/';
+//分离css文件
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 //通用配置
 const common = {
-    entry: ["babel-polyfill", './src/index.jsx'],
+    entry: {
+        bundle: ["babel-polyfill", './src/index.jsx'],
+    },
     resolve: {
         extensions: ['.js', '.jsx']
     },
+    module: {
+        rules: [{
+            test: /\.(jsx|js)?$/,
+            exclude: /node_modules/,
+            use: {
+                loader: 'babel-loader',
+                options: {
+                    presets: ['es2015', 'react', "stage-0"],
+                    plugins: [
+                        'transform-decorators-legacy',
+                        ["import", { libraryName: "antd", libraryDirectory: "es", style:true }] // `style: true` 会加载 less 文件
+                    ]
+                }
+            }
+        }, {
+            test: /\.(png|svg|jpg|gif)$/,
+            use: [{
+                loader: 'file-loader',
+                options: {
+                    name(file) {
+                        return `${ASSET_PATH}img/[hash:8].[ext]`
+                    }
+                }
+            }
+
+            ]
+        }]
+    },
+    plugins: [
+        new CopyWebpackPlugin([{
+            from: "./public",
+            to: path.resolve(__dirname, 'dist')
+        }]),
+        new HtmlWebpackPlugin({
+            template: "./public/index.html",
+        }),
+    ],
+    output: {
+        filename: '[name].[chunkHash:8].js',
+        chunkFilename: "[name].[chunkHash:8].js",
+        path: path.resolve(__dirname, 'dist'),
+    }
+};
+//开发环境
+const dev = merge(common, {
     module: {
         rules: [{
             test: /\.less$/,
@@ -32,48 +81,8 @@ const common = {
         }, {
             test: /\.css$/,
             use: ['style-loader', 'css-loader']
-        }, {
-            test: /\.(jsx|js)?$/,
-            exclude: /node_modules/,
-            use: {
-                loader: 'babel-loader',
-                options: {
-                    presets: ['es2015', 'react', "stage-0"],
-                    plugins: [
-                        'transform-decorators-legacy'
-                    ]
-                }
-            }
-        }, {
-            test: /\.(png|svg|jpg|gif)$/,
-            use: [{
-                    loader: 'file-loader',
-                    options: {
-                        name(file) {
-                            return '[path][hash].[ext]'
-                        }
-                    }
-                }
-
-            ]
-        }]
+        },]
     },
-    plugins: [
-        new CopyWebpackPlugin([{
-            from: "./public",
-            to: path.resolve(__dirname, 'dist')
-        }]),
-        new HtmlWebpackPlugin({
-            template: "./public/index.html",
-        })
-    ],
-    output: {
-        filename: 'bundle.[hash].js',
-        path: path.resolve(__dirname, 'dist'),
-    }
-};
-//开发环境
-const dev = merge(common, {
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './dist',
@@ -84,9 +93,46 @@ const dev = merge(common, {
 });
 //生产环境
 const prod = merge(common, {
+    entry: {
+        vendor: ["react", "react-dom", "react-document-title", "react-router-config", "react-router-dom",
+            "mobx", "mobx-react", "isomorphic-fetch", "qs", "moment","lodash"]
+    },
+    module: {
+        rules: [{
+            test: /\.less$/,
+            use: ExtractTextPlugin.extract({
+                fallback: "style-loader",
+                use: [{
+                    loader: 'css-loader',
+                    options: { minimize: true }
+                }, {
+                    loader: "less-loader",
+                    options: {
+                        javascriptEnabled: true
+                    }
+                }]
+            })
+        }, {
+            test: /\.css$/,
+            use: ExtractTextPlugin.extract({
+                fallback: "style-loader",
+                use: {
+                    loader: 'css-loader',
+                    options: { minimize: true }
+                }
+            })
+        },]
+    },
     plugins: [
         new CleanWebpackPlugin(['dist']),
-        new UglifyJSPlugin()
+        new ExtractTextPlugin(`${ASSET_PATH}css/style.[hash:8].css`),
+        new webpack.optimize.CommonsChunkPlugin({
+            names: ['vendor', 'manifest'],
+        }),
+        new UglifyJSPlugin(),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': "'production'",
+        }),
     ]
 });
 

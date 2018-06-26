@@ -1,43 +1,34 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {observer} from 'mobx-react';
-import {observable, action} from 'mobx';
-import {Button,Tag} from 'antd';
+import DocumentTitle from 'react-document-title';
+import { observer } from 'mobx-react';
+import { renderRoutes } from 'react-router-config';
+import { LocaleProvider } from 'antd';
+import zhCN from 'antd/lib/locale-provider/zh_CN';
+
 import "./index.less";
-
-var appState = observable({timer: 0});
-appState.resetTimer = action(function reset() {
-    appState.timer = 0;
-});
-
-setInterval(action(function tick() {
-    appState.timer += 1;
-}), 1000);
-
+import { routes, Router } from './routes';
+import globalStore from './models/global';
 @observer
-class TimerView extends React.Component {
+class AppView extends Component {
+    componentWillMount(){
+        globalStore.setRoutes(routes);
+        globalStore.onRouterChanged({
+            pathname:location.hash.replace("#","")
+        });
+    }
     render() {
-        return (
-            <div>
-                <Tag color="magenta">
-                    Seconds passed: {this.props.appState.timer}
-                </Tag>
-                <Button
-                    onClick={this
-                    .onReset
-                    .bind(this)}
-                    type="primary">重置</Button>
-            </div>
-        );
+        const {store} = this.props;
+        return <DocumentTitle title={store.pageTitle}>
+            <LocaleProvider locale={zhCN}>
+                <Router>
+                    {renderRoutes(routes)}
+                </Router>
+            </LocaleProvider>
+        </DocumentTitle>
     }
-
-    onReset() {
-        this
-            .props
-            .appState
-            .resetTimer();
-    }
-};
+}
 
 ReactDOM.render(
-    <TimerView appState={appState}/>, document.getElementById('root'));
+    <AppView store={globalStore} />
+    , document.getElementById('root'));

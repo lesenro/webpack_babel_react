@@ -1,11 +1,21 @@
 <!DOCTYPE html>
+<!--[if lt IE 10]>
+<html lang="en" class="ie no-js"></html>
+<![endif]-->
+<!--[if !IE]><!-->
 <html lang="en">
+<!--<![endif]-->
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>test page</title>
+    <title></title>
+    <!-- Polyfills -->
+    <!--[if lt IE 10]>
+    <script src="https://as.alipayobjects.com/g/component/??console-polyfill/0.2.2/index.js,es5-shim/4.5.7/es5-shim.min.js,es5-shim/4.5.7/es5-sham.min.js,es6-shim/0.35.1/es6-sham.min.js,es6-shim/0.35.1/es6-shim.min.js,html5shiv/3.7.2/html5shiv.min.js,media-match/2.0.2/media.match.min.js"></script>
+    <![endif]-->
+    <script src="https://as.alipayobjects.com/g/component/??es6-shim/0.35.1/es6-sham.min.js,es6-shim/0.35.1/es6-shim.min.js"></script>
 </head>
 
 <body>
@@ -13,6 +23,17 @@
         You need to enable JavaScript to run this app.
     </noscript>
     <div id="root"></div>
+    <script>
+
+        window.AppConfigs = {
+            Copyright: "Copyright @2013-" + (new Date()).getFullYear() + " GGCMS内容管理系统",
+            WebRoot: "/",
+            ApiUrl: "/api",
+            System_name: "后台管理",
+            Company_name: "GGCMS内容管理系统",
+            Company_short_name: "GGCMS",
+        };
+    </script>
 </body>
 
 </html>
