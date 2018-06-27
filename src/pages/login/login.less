@@ -29,21 +29,21 @@
     text-align: center;
   }
   
-  .login-header {
+  .header {
     height: 44px;
     line-height: 44px;
     a {
       text-decoration: none;
     }
-    .logo {
-      height: 44px;
-      width: auto;
-      vertical-align: top;
-      margin-right: 16px;
-      background: transparent;
-    }
+
   }
-  
+  .logo {
+    height: 44px;
+    width: auto;
+    vertical-align: top;
+    margin-right: 16px;
+    background: transparent;
+  }
   
   
   .title {
@@ -65,7 +65,7 @@
   width: 368px;
   margin: 0 auto;
   position: relative;
-
+}
 
   :global {
     .ant-tabs .ant-tabs-bar {
@@ -76,6 +76,9 @@
 
     .ant-form-item {
       margin-bottom: 24px;
+    }
+    .ant-form-item-control {
+      line-height: 22px;
     }
   }
 
@@ -92,21 +95,17 @@
   .additional {
     text-align: left;
 
-    .forgot {
-      float: right;
-    }
 
-    .submit {
-      width: 100%;
-      margin-top: 24px;
-    }
-
-    :global {
-      .ant-form-item-control {
-        line-height: 22px;
-      }
-    }
   }
+  .forgot {
+    float: right;
+  }
+
+  .submit {
+    width: 100%;
+    margin-top: 24px;
+  }
+
 
   .codeImg{
     float: right;
@@ -114,4 +113,4 @@
     height: 28px;
     margin-top: 5px;
   }
-}
+

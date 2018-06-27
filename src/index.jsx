@@ -7,6 +7,7 @@ import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 
 import "./index.less";
+import "./index.css";
 import { routes, Router } from './routes';
 import globalStore from './models/global';
 @observer

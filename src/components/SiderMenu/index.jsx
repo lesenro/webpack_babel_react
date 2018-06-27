@@ -147,9 +147,9 @@ export default class SiderMenu extends React.Component {
                 breakpoint="lg"
                 onCollapse={onCollapse}
                 width={256}
-                className="sider"
+                className={styles.sider}
             >
-                <div className="logo" key="logo">
+                <div className={styles.logo} key="logo">
                     <Link to="/">
                         <img src={logo} alt="logo" />
                         <h1>{appcfg.System_name}</h1>

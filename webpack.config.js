@@ -34,7 +34,7 @@ const common = {
                     presets: ['es2015', 'react', "stage-0"],
                     plugins: [
                         'transform-decorators-legacy',
-                        ["import", { libraryName: "antd", libraryDirectory: "es", style:true }] // `style: true` 会加载 less 文件
+                        ["import", { libraryName: "antd", libraryDirectory: "es", style: "css" }] // `style: true` 会加载 less 文件
                     ]
                 }
             }
@@ -72,12 +72,20 @@ const dev = merge(common, {
     module: {
         rules: [{
             test: /\.less$/,
-            use: ['style-loader', 'css-loader', {
-                loader: "less-loader",
-                options: {
-                    javascriptEnabled: true
-                }
-            }]
+            use: ['style-loader',
+                {
+                    loader: 'css-loader',
+                    options: {
+                        modules: true,
+                        localIdentName: '[local]_[hash:base64:8]'
+                    }
+                },
+                {
+                    loader: "less-loader",
+                    options: {
+                        javascriptEnabled: true
+                    }
+                }]
         }, {
             test: /\.css$/,
             use: ['style-loader', 'css-loader']
@@ -95,7 +103,7 @@ const dev = merge(common, {
 const prod = merge(common, {
     entry: {
         vendor: ["react", "react-dom", "react-document-title", "react-router-config", "react-router-dom",
-            "mobx", "mobx-react", "isomorphic-fetch", "qs", "moment","lodash"]
+            "mobx", "mobx-react", "isomorphic-fetch", "qs", "moment", "lodash"]
     },
     module: {
         rules: [{
@@ -104,7 +112,11 @@ const prod = merge(common, {
                 fallback: "style-loader",
                 use: [{
                     loader: 'css-loader',
-                    options: { minimize: true }
+                    options: {
+                        minimize: true,
+                        modules: true,
+                        localIdentName: '[local]_[hash:base64:8]'
+                    }
                 }, {
                     loader: "less-loader",
                     options: {

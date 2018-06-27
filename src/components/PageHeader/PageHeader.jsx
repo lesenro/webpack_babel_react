@@ -4,7 +4,7 @@ import moment from 'moment';
 import groupBy from 'lodash/groupBy';
 // import Debounce from 'lodash-decorators/debounce';
 import { Link } from 'react-router-dom';
-import './PageHeader.less';
+import styles from './PageHeader.less';
 
 const { confirm } = Modal;
 
@@ -87,7 +87,7 @@ export default class PageHeader extends PureComponent {
       onMenuClick,
     } = this.props;
     const menu = (
-      <Menu className="menu" selectedKeys={[]} onClick={onMenuClick}>
+      <Menu className={styles.menu} selectedKeys={[]} onClick={onMenuClick}>
         <Menu.Item disabled>
           <Icon type="user" />个人中心
         </Menu.Item>
@@ -105,20 +105,20 @@ export default class PageHeader extends PureComponent {
     );
     const noticeData = this.getNoticeData();
     return (
-      <div className="header">
+      <div className={styles.header}>
         {isMobile && [
-          <Link to="/" className="logo" key="logo">
+          <Link to="/" className={styles.logo} key="logo">
             <img src={logo} alt="logo"/>
           </Link>,
           <Divider type="vertical" key="line" />,
         ]}
         <Icon
-          className="trigger"
+          className={styles.trigger}
           type={collapsed ? 'menu-unfold' : 'menu-fold'}
           onClick={this.toggle}
         />
-        <div className="right">
-          <a className="action" onClick={this.quit}>
+        <div className={styles.right}>
+          <a className={styles.action} onClick={this.quit}>
             <Icon type="logout" /> <span> 退出</span>
           </a>
         </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import globalStore from '../../models/global';
 
-import './PageFooter.less';
+import styles from './PageFooter.less';
 const links = [
     {
         key: "home",
@@ -20,15 +20,15 @@ const links = [
 ];
 const PageFooter = () => {
     return (
-        <div className="globalFooter">
+        <div className={styles.globalFooter}>
             {links && (
-                <div className="links">
+                <div className={styles.links}>
                     {links.map(link => (
                         <Link key={link.key} to={link.href} >{link.title}</Link>
                     ))}
                 </div>
             )}
-            {globalStore.appCfg && <div className="copyright">{globalStore.appCfg.Copyright}</div>}
+            {globalStore.appCfg && <div className={styles.copyright}>{globalStore.appCfg.Copyright}</div>}
         </div>
     );
 };

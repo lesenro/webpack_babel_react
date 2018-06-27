@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Icon, message } from 'antd';
+import { Layout } from 'antd';
 import { observer } from 'mobx-react';
 import PageHeader from '../../components/PageHeader/PageHeader';
 import PageFooter from '../../components/PageFooter/PageFooter';

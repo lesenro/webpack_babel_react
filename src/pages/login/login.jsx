@@ -3,7 +3,7 @@ import { Tooltip, notification } from 'antd';
 import { observer } from 'mobx-react';
 import { computed, reaction } from 'mobx';
 import GridForm from "../../components/GridForm/GridForm";
-import './login.less';
+import styles from './login.less';
 import logopng from '../../assets/logo.svg';
 import PageFooter from '../../components/PageFooter/PageFooter'
 import { AppTools } from "../../utils/utils";
@@ -96,24 +96,24 @@ const loginForm = {
         },
         ElementProps: {},
         SubmitItemProps: {
-            className: "additional",
+            className: "additional "+styles.additional,
         },
         SubmitButtonProps: {
             size: "large",
-            className: "submit",
+            className: "submit "+styles.submit,
             type: "primary",
             text: "登录"
         }
     }
 };
 const Header = (props) => {
-    return (<div className="top">
-        <div className="login-header">
-            <a href="#/"><img alt="logo" className="logo" src={logopng} />
-                <span className="title">{globalStore.appCfg.Company_name}</span>
+    return (<div className={styles.top}>
+        <div className={styles.Header}>
+            <a href="#/"><img alt="logo" className={styles.logo} src={logopng} />
+                <span className={styles.title}>{globalStore.appCfg.Company_name}</span>
             </a>
         </div>
-        <div className="desc">{globalStore.appCfg.System_name}</div>
+        <div className={styles.desc}>{globalStore.appCfg.System_name}</div>
     </div>)
 };
 
@@ -138,7 +138,7 @@ export default class Login extends Component {
         const imgItem = loginForm.Items.find(x => x.Name == "imageCode");
         if (imgItem) {
             imgItem.BeforeChildren = <Tooltip placement="top" title="看不清,换一换">
-                <img ref={img => this.refImg = img} className="codeImg" src={this.codeimg} onClick={this.codeImgChange} />
+                <img ref={img => this.refImg = img} className={styles["codeImg"]} src={this.codeimg} onClick={this.codeImgChange} />
             </Tooltip>;
 
             this.ImgCodeChanged = reaction(
@@ -183,10 +183,10 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div className="container">
-                <div className="content">
+            <div className={styles.container}>
+                <div className={styles.content}>
                     <Header />
-                    <div  className="main">
+                    <div  className={styles.main}>
                         <GridForm onError={ev => {
                             console.log(ev);
                         }}

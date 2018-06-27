@@ -1,0 +1,20 @@
+.ie .layout-root {
+    display: table
+}
+.ie .ant-layout-sider {
+    display: table-cell;
+    vertical-align: top;
+}
+.ie .layout-main {
+    display: table-cell;
+    width: 100%;
+}
+.ant-layout-header {
+    position: fixed;
+    top: 0;
+    right: 0;
+}
+
+.layout-main {
+    padding-top: 64px;
+}
